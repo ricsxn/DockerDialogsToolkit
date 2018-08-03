@@ -1,0 +1,91 @@
+#!/bin/bash
+#
+# Docker ToolKit consists of several functions to ease the management
+# of docker containers
+#
+# Author: Riccardo Bruno <riccardo.bruno@ct.infn.it>
+#
+
+dattach() {
+ [ "$CNT" = "" ] && CNT=$1
+ [ "$CNT" = "" ] &&\
+   echo "usage: dattach <container_id> or CNT=<container_id>; dattach" ||\
+   sudo docker exec -it $CNT /bin/bash -c "stty cols $COLUMNS rows $LINES && /bin/bash --login"
+}
+export -f dattach
+
+dstart() {
+ [ "$CNT" = "" ] && CNT=$1
+ [ "$CNT" = "" ] &&\
+   echo "usage: dstart <container_id> or CNT=<container_id>; dstart" ||\
+   sudo docker start $CNT
+}
+export -f dstart
+
+dstop() {
+ [ "$CNT" = "" ] && CNT=$1
+ [ "$CNT" = "" ] &&\
+   echo "usage: dstop <container_id> or CNT=<container_id>; dstop" ||\
+   sudo docker stop $CNT
+}
+export -f dstop
+
+drestart() {
+  dstop && dstart
+}
+export -f drestart
+
+drm() {
+ [ "$CNT" = "" ] && CNT=$1
+ [ "$CNT" = "" ] &&\
+   echo "usage: drm <container_id> or CNT=<container_id>; drm" && return 0 ||\
+   ([ "true" == "$(docker inspect $CNT | jq '.[0].State.Running')" ] &&\
+      sudo docker stop $CNT &&\
+      sudo docker rm $CNT ||\
+      sudo docker rm $CNT)
+}
+export -f drm
+
+dlogs() { 
+ [ "$CNT" = "" ] && CNT=$1
+ [ "$CNT" = "" ] &&\
+   echo "usage: dlogs <container_id> or CNT=<container_id>; dlogs" ||\
+   sudo docker logs $CNT
+}
+export -f dlogs
+
+dps() {
+ sudo docker ps -a
+}
+export -f dps
+
+dexe() {
+ [ "$CNT" = "" ] &&\
+   sudo docker exec -ti $* ||\
+   sudo docker exect $CNT $*
+}
+export -f dexe
+
+dkill() {
+  [ "$CNT" = "" ] &&\
+    CONTAINER_IDS="$*" ||\
+    CONTAINER_IDS=$CNT
+  [ ! -z "$CONTAINER_IDS" ] &&\
+    for c in $CONTAINER_IDS; do\
+      dstop $c &&\
+      drm $c;\
+    done || echo "Usage dkill <container_id>o or CNT=<container_id>; dkill"
+}
+export -f dkill
+
+dip() {
+  [ "$CNT" = "" ] && CNT=$1
+  [ "$CNT" = "" ] &&\
+      echo "Usage dip <container_id>o or CNT=<container_id>; dip" ||\
+      sudo docker inspect $CNT |\
+      jq '.[].NetworkSettings.Networks' |\
+      grep IPAddress |\
+      awk '{ print $2 }' |\
+      sed s/\"//g |\
+      sed s/,//g
+}

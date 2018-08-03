@@ -1,0 +1,93 @@
+#!/bin/bash
+#
+# DDT <command> Docker Dialog Toolkit for docker containers
+#
+# Simple commands to manage containers using dialog boxex
+# In order to work properly this file any function defined
+# in file 'dtk' (Docker ToolKit), have to be sourced before
+#
+# Author: Riccardo Bruno <riccardo.bruno@ct.infn.it>
+
+DDT_TMPFILES=()
+_cleanup() {
+  #echo "Cleaning up ..."
+  #echo "files: "${DDT_TMPFILES[@]}
+  DDT_RMFILES=(${DDT_TMPFILES[@]})
+  for f in ${DDT_TMPFILES[@]}; do
+    #printf "Cleaning temporary file: $f ... "
+    rm -f $f && DDT_RMFILES=(${DDT_RMFILES[@]/$f}) #&& echo "ok" || echo "failed"
+  done
+  DDT_TMPFILES=(${DDT_RMFILES[@]})
+}
+trap _cleanup EXIT
+
+_tmp() {
+  RES=$(mktemp)
+  [ "$RES" != "" ] && DDT_TMPFILES+=("$RES")
+}
+
+_chk() {
+  DVER=$(dialog --version 2>/dev/null)
+  [ -z "$DVER" ] &&\
+      echo "Please install dialog package in your system" &&\
+      RES=1 || RES=0
+}
+
+_confirm() {
+  CNT_NAME=$1
+  dialog --title "Delete container" \
+	 --keep-tite \
+         --yesno "Are you sure you want to delete container $CNT_NAME?" 7 60 2>$SEL
+  RES=$?
+  return $RES
+}
+
+ddt_sel() {
+  [ "$1" == "" ] && FN="" || FN=": $1"
+  _chk; [ $RES -ne 0 ] && return 1
+  _tmp; TMP=$RES
+  _tmp; SEL=$RES
+  sudo docker ps --all --format "{{.ID}} {{.Names}}" > $TMP
+  dialog --title "Container selection$FN" \
+	 --keep-tite\
+	 --menu 'Please select a container from the list' 18 70 15 $(cat $TMP) 2>$SEL
+  CNT=$(cat $SEL)
+  _cleanup
+}
+export -f ddt_sel
+
+ddt_con() {
+  ddt_sel "Connect" && dattach
+}
+
+ddt_restart() {
+  ddt_sel "Restart" && [ "$CNT" != "" ] && drestart
+}
+
+ddt_stop() {
+  ddt_sel "Stop" && [ "$CNT" != "" ] && dstop
+}
+
+ddt_start() {
+  ddt_sel "Start" && [ "$CNT" != "" ] && dstart
+}
+
+ddt_logs() {
+  ddt_sel "Logs" && [ "$CNT" != "" ] && dlogs
+}
+
+ddt_rm() {
+  ddt_sel "Delete" && [ "$CNT" != "" ] && _confirm $CNT && drm || echo "Operation cancelled"
+}
+
+ddt_net() {
+ _chk; [ $RES -ne 0 ] && return 1
+ _tmp; TMP=$RES
+ _tmp; SEL=$RES
+ sudo docker network ls --format "{{.ID}} {{.Name}}" > $TMP
+ dialog --keep-tite\
+         --menu 'Please select a network from the list' 18 70 15 $(cat $TMP) 2>$SEL
+ CNW=$(cat $SEL)
+ [ "$CNW" != "" ] && sudo docker network inspect $CNW | jq '.'
+  _cleanup
+}
