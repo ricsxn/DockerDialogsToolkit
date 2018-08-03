@@ -7,6 +7,7 @@ The toolkit consists of two scripts:
  
 Both scripts need to be sourced before their usage, preferably during the shell initialization phases (.bashrc or .profile)
 Please pay attention that for a correct usage of the commands defined by the `ddt` script, the [Dialogs package](http://invisible-island.net/dialog/dialog.html) have to be installed in the hosting system. Please refer to your OS support for this package.
+Some commands are also requesting the 'jq' utilty.
 
 ## `ddt`
 This is the main component of the ToolKit which collects all functions that manage docker containers using Dialog Boxes.
@@ -20,6 +21,7 @@ Below the list of possible commands:
  + `ddt_start` Show logs of the selected container
  + `ddt_rm` Remove the selected container, (it asks for confirmation)
  + `ddt_net` Select one of the defined docker networks (`ddt_net*` commands are still under development)
+ + `ddt_inspect` Inspect the selected container
 
 ## `dtk`
 This script defines the core functions for `ddt` commands. These functions can be used directly by the user offering a very productive set of shortcuts for the most popular commands used during docker container managermaent.
@@ -35,4 +37,5 @@ Below the list of possible commands:
  + `dexe`  Execute a command on top of the specified container
  + `dkill` Stop and then remove the specified container
  + `dip` Show IP address of the selected container
+ + `dinspect` Inspects the selected container
 

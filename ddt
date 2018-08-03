@@ -80,6 +80,10 @@ ddt_rm() {
   ddt_sel "Delete" && [ "$CNT" != "" ] && _confirm $CNT && drm || echo "Operation cancelled"
 }
 
+ddt_inspect() {
+  ddt_sel "Inspect" && [ "$CNT" != "" ] && dinspect || echo "Operation cancelled"
+}
+
 ddt_net() {
  _chk; [ $RES -ne 0 ] && return 1
  _tmp; TMP=$RES

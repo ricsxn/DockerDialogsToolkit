@@ -81,11 +81,18 @@ export -f dkill
 dip() {
   [ "$CNT" = "" ] && CNT=$1
   [ "$CNT" = "" ] &&\
-      echo "Usage dip <container_id>o or CNT=<container_id>; dip" ||\
-      sudo docker inspect $CNT |\
-      jq '.[].NetworkSettings.Networks' |\
-      grep IPAddress |\
-      awk '{ print $2 }' |\
-      sed s/\"//g |\
-      sed s/,//g
+    echo "Usage dip <container_id>o or CNT=<container_id>; dip" ||\
+    sudo docker inspect $CNT |\
+    jq '.[].NetworkSettings.Networks' |\
+    grep IPAddress |\
+    awk '{ print $2 }' |\
+    sed s/\"//g |\
+    sed s/,//g
+}
+
+dinspect() {
+  [ "$CNT" = "" ] && CNT=$1
+  [ "$CNT" = "" ] &&\
+    echo "Usage dip <container_id>o or CNT=<container_id>; dip" ||\
+    sudo docker inspect $CNT | jq '.'
 }
