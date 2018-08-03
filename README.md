@@ -6,13 +6,14 @@ The toolkit consists of two scripts:
  + `ddk` - A small set of low level functions simplifying docker container management
  
 Both scripts need to be sourced before their usage, preferably during the shell initialization phases (.bashrc or .profile)
+Please pay attention that for a correct usage of the commands defined by the `ddt` script, the [Dialogs package](http://invisible-island.net/dialog/dialog.html) have to be installed in the hosting system. Please refer to your OS support for this package.
 
 ## `ddt`
 This is the main component of the ToolKit which collects all functions that manage docker containers using Dialog Boxes.
 Below the list of possible commands:
 
  + `ddt_sel` Select a docker container from the list of all available containers. This command can be used in conjunction with `dtk` defined functions
- + `ddt_con` Open a bash terminal against the selecte docker container
+ + `ddt_con` Open a bash terminal against the selected docker container
  + `ddt_restart` Restart  a selected container
  + `ddt_stop` Stop the selected container
  + `ddt_start` Start the selected container
