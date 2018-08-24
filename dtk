@@ -74,14 +74,14 @@ dkill() {
     for c in $CONTAINER_IDS; do\
       dstop $c &&\
       drm $c;\
-    done || echo "Usage dkill <container_id>o or CNT=<container_id>; dkill"
+    done || echo "Usage dkill <container_id> or CNT=<container_id>; dkill"
 }
 export -f dkill
 
 dip() {
   [ "$CNT" = "" ] && CNT=$1
   [ "$CNT" = "" ] &&\
-    echo "Usage dip <container_id>o or CNT=<container_id>; dip" ||\
+    echo "Usage dip <container_id> or CNT=<container_id>; dip" ||\
     sudo docker inspect $CNT |\
     jq '.[].NetworkSettings.Networks' |\
     grep IPAddress |\
@@ -93,6 +93,20 @@ dip() {
 dinspect() {
   [ "$CNT" = "" ] && CNT=$1
   [ "$CNT" = "" ] &&\
-    echo "Usage dip <container_id>o or CNT=<container_id>; dip" ||\
+    echo "Usage dip <container_id> or CNT=<container_id>; dip" ||\
     sudo docker inspect $CNT | jq '.'
 }
+
+# Docker images
+
+dimgls() {
+  sudo docker image list
+}
+
+dimgcon() {
+  [ "$IMG" = "" ] && IMG=$1
+  [ "$IMG" = "" ] &&\
+    echo "Usage dimgcon  <image_id> or IMG=<image_id>; dimgcon" ||\
+    sudo docker run --cidfile=".$IMG" -it $IMG /bin/bash
+}
+

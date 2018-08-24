@@ -77,7 +77,8 @@ ddt_logs() {
 }
 
 ddt_rm() {
-  ddt_sel "Delete" && [ "$CNT" != "" ] && _confirm $CNT && drm || echo "Operation cancelled"
+  [ "$1" != "" ] && CNT=$1 || ddt_sel "Delete" 
+  [ "$CNT" != "" ] && _confirm $CNT && drm || echo "Operation cancelled"
 }
 
 ddt_inspect() {
@@ -95,3 +96,30 @@ ddt_net() {
  [ "$CNW" != "" ] && sudo docker network inspect $CNW | jq '.'
   _cleanup
 }
+
+#
+# Images
+#
+
+ddt_imgsel() {
+  [ "$1" == "" ] && FN="" || FN=": $1"
+  _chk; [ $RES -ne 0 ] && return 1
+  _tmp; TMP=$RES
+  _tmp; SEL=$RES
+  sudo docker image ls --format " {{.ID}} \"{{.Repository}} ({{.CreatedSince}})\"" > $TMP
+  CMD="dialog --title \"Image selection$FN\" --keep-tite --menu 'Please select an image from the list' 18 70 15 $(cat $TMP) 2>$SEL"
+  eval $CMD
+  IMG=$(cat $SEL)
+  _cleanup
+}
+export -f ddt_imgsel
+
+
+ddt_imgcon() {
+  TMP=$(mktemp)
+  ddt_sel "Connect" && [ "$IMG" != "" ] && dimgcon && ddt_rm $(cat .$IMG) || echo "Operation cancelled"
+}
+export -f ddt_imgcon
+
+
+
