@@ -117,7 +117,7 @@ export -f ddt_imgsel
 
 ddt_imgcon() {
   TMP=$(mktemp)
-  ddt_sel "Connect" && [ "$IMG" != "" ] && dimgcon && ddt_rm $(cat .$IMG) || echo "Operation cancelled"
+  ddt_imgsel "Connect" && [ "$IMG" != "" ] && dimgcon && ddt_rm $(cat .$IMG) || echo "Operation cancelled"
 }
 export -f ddt_imgcon
 
