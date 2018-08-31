@@ -106,7 +106,7 @@ ddt_imgsel() {
   _chk; [ $RES -ne 0 ] && return 1
   _tmp; TMP=$RES
   _tmp; SEL=$RES
-  sudo docker image ls --format " {{.ID}} \"{{.Repository}} ({{.CreatedSince}})\"" > $TMP
+  sudo docker image ls --format " \"{{.ID}}\" \"{{.Repository}} ({{.CreatedSince}})\"" > $TMP
   CMD="dialog --title \"Image selection$FN\" --keep-tite --menu 'Please select an image from the list' 18 70 15 $(cat $TMP) 2>$SEL"
   eval $CMD
   IMG=$(cat $SEL)
