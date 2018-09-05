@@ -17,23 +17,24 @@ All functions defined in dtk script are referring to the target docker container
 Below the list of possible commands divided by topics:
 
 Containers
- dattach Opens a bash terminal against the specified container
- dstart Start the specified container
- dstop Stop the specified container
- drm Remove the specified container (Eventually it stops running containers)
- dlogs Show container logs
- dps Show the list of contaners
- dexe  Execute a command on top of the specified container
- dkill Stop and then remove the specified container
- dip Show IP address of the selected container
- dinspect Inspects the selected container
+ 'dattach' Opens a bash terminal against the specified container
+ 'dstart' Start the specified container
+ 'dstop' Stop the specified container
+ 'drm' Remove the specified container (Eventually it stops running containers)
+ 'dlogs' Show container logs
+ 'dps' Show the list of contaners
+ 'dexe'  Execute a command on top of the specified container
+ 'dkill' Stop and then remove the specified container
+ 'dip' Show IP address of the selected container
+ 'dinspect' Inspects the selected container
 
 Images
- dimgls List available images
- dimgcon Connect to specified image (Opens a /bin/bash)
- dimgrun Execute the given image as daemon
+ 'dimgls' List available images
+ 'dimgcon' Connect to specified image (Opens a /bin/bash)
+ 'dimgrun' Execute the given image as daemon
  
 Misc.
+ 'dtk_help' Print this message
  'dclean' Cleanup stopped containers and untagged images
 EOF
 }

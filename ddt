@@ -65,6 +65,9 @@ Images
  'ddt_imgsel' Select a docker image form the list of available images. This command can be used in conjunction with dtk defined functions
  'ddt_imgcon' Connect to the selected image. It opens a /bin/bash console prompting user to destroy container upon exit
  'ddt_imgrun' Execute the selected image as daemon
+
+Misc.
+ 'ddt_help' Print this message
 EOF
 }
 
