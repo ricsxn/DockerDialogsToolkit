@@ -11,8 +11,9 @@ Some commands are also requesting the 'jq' utilty.
 
 ## `ddt`
 This is the main component of the ToolKit which collects all functions that manage docker containers using Dialog Boxes.
-Below the list of possible commands:
-
+Below the list of possible commands divided by topics:
+ 
+**Containers**
  + `ddt_sel` Select a docker container from the list of all available containers. This command can be used in conjunction with `dtk` defined functions
  + `ddt_con` Open a bash terminal against the selected docker container
  + `ddt_restart` Restart  a selected container
@@ -23,11 +24,20 @@ Below the list of possible commands:
  + `ddt_net` Select one of the defined docker networks (`ddt_net*` commands are still under development)
  + `ddt_inspect` Inspect the selected container
 
+**Images**
+ + `ddt_imgsel` Select a docker image form the list of available images. This command can be used in conjunction with `dtk` defined functions
+ + `ddt_imgcon` Connect to the selected image. It opens a /bin/bash console prompting user to destroy container upon exit
+ + `ddt_imgrun` Execute the selected image as daemon
+
+**Misc.**
+ + `ddt_help` List available `ddt_*` commands
+
 ## `dtk`
 This script defines the core functions for `ddt` commands. These functions can be used directly by the user offering a very productive set of shortcuts for the most popular commands used during docker container managermaent.
 All functions defined in `dtk` script are referring to the target docker container using the container id as parameter or inside the environment variable `$CNT`.\
-Below the list of possible commands:
+Below the list of possible commands divided by topics:
 
+**Containers**
  + `dattach` Opens a bash terminal against the specified container
  + `dstart` Start the specified container
  + `dstop` Stop the specified container
@@ -38,4 +48,13 @@ Below the list of possible commands:
  + `dkill` Stop and then remove the specified container
  + `dip` Show IP address of the selected container
  + `dinspect` Inspects the selected container
+
+**Images**
+ + `dimgls` List available images
+ + `dimgcon` Connect to specified image (Opens a /bin/bash)
+ + `dimgrun` Execute the given image as daemon
+ 
+**Misc.**
+ + `dtk_help` List available `dtk_*` commands
+ + `dclean` Cleanup stopped containers and untagged images
 
