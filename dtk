@@ -110,3 +110,15 @@ dimgcon() {
     sudo docker run --cidfile=".$IMG" -it $IMG /bin/bash
 }
 
+dimgrun() {
+  [ "$IMG" = "" ] && IMG=$1 && CNM=$2
+  [ "$CNM" = "" ] && CNMOPT="" || CNMOPT="--name $CNM"
+  [ "$IMG" = "" ] &&\
+    echo "Usage dimgrun <image_id> <container_name> or IMG=<image_id> [CNM=<container_name>]; dimgcon" ||\
+    sudo docker run -d $CNMOPT $IMG
+}
+
+# Mis
+dclean() {
+   echo "Cleaning stopped containers" && docker ps -aq --no-trunc -f status=exited | xargs docker rm && echo "Cleaning untagged images" && docker images -q --filter dangling=true | xargs docker rmi
+}
