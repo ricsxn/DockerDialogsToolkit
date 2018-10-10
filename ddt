@@ -27,7 +27,7 @@ _tmp() {
 }
 
 _chk() {
-  RES = 0
+  RES=0
   DVER=$(dialog --version 2>/dev/null)
   [ -z "$DVER" ] &&\
       echo "Please install dialog package in your system" &&\
