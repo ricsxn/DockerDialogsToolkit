@@ -27,10 +27,15 @@ _tmp() {
 }
 
 _chk() {
+  RES = 0
   DVER=$(dialog --version 2>/dev/null)
   [ -z "$DVER" ] &&\
       echo "Please install dialog package in your system" &&\
-      RES=1 || RES=0
+      RES=1
+  JQVER=$(jq --version 2>/dev/null)
+  [ -z "$JQVER" ] &&\
+      echo "Please isntall jq utility in your system" &&\
+      RES=1
 }
 
 _confirm() {
