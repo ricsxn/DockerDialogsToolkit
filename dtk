@@ -47,7 +47,7 @@ dattach() {
  [ "$CNT" = "" ] && CNT=$1
  [ "$CNT" = "" ] &&\
    echo "usage: dattach <container_id> or CNT=<container_id>; dattach" ||\
-   sudo docker exec -it $CNT /bin/bash -c "stty cols $COLUMNS rows $LINES && /bin/bash --login"
+   docker exec -it $CNT /bin/bash -c "stty cols $COLUMNS rows $LINES && /bin/bash --login"
 }
 export -f dattach
 
@@ -55,7 +55,7 @@ dstart() {
  [ "$CNT" = "" ] && CNT=$1
  [ "$CNT" = "" ] &&\
    echo "usage: dstart <container_id> or CNT=<container_id>; dstart" ||\
-   sudo docker start $CNT
+   docker start $CNT
 }
 export -f dstart
 
@@ -63,7 +63,7 @@ dstop() {
  [ "$CNT" = "" ] && CNT=$1
  [ "$CNT" = "" ] &&\
    echo "usage: dstop <container_id> or CNT=<container_id>; dstop" ||\
-   sudo docker stop $CNT
+   docker stop $CNT
 }
 export -f dstop
 
@@ -77,9 +77,9 @@ drm() {
  [ "$CNT" = "" ] &&\
    echo "usage: drm <container_id> or CNT=<container_id>; drm" && return 0 ||\
    ([ "true" == "$(docker inspect $CNT | jq '.[0].State.Running')" ] &&\
-      sudo docker stop $CNT &&\
-      sudo docker rm $CNT ||\
-      sudo docker rm $CNT)
+      docker stop $CNT &&\
+      docker rm $CNT ||\
+      docker rm $CNT)
 }
 export -f drm
 
@@ -87,19 +87,19 @@ dlogs() {
  [ "$CNT" = "" ] && CNT=$1
  [ "$CNT" = "" ] &&\
    echo "usage: dlogs <container_id> or CNT=<container_id>; dlogs" ||\
-   sudo docker logs $CNT
+   docker logs $CNT
 }
 export -f dlogs
 
 dps() {
- sudo docker ps -a
+  docker ps -a
 }
 export -f dps
 
 dexe() {
  [ "$CNT" = "" ] &&\
-   sudo docker exec -ti $* ||\
-   sudo docker exect $CNT $*
+   docker exec -ti $* ||\
+   docker exect $CNT $*
 }
 export -f dexe
 
@@ -119,7 +119,7 @@ dip() {
   [ "$CNT" = "" ] && CNT=$1
   [ "$CNT" = "" ] &&\
     echo "Usage dip <container_id> or CNT=<container_id>; dip" ||\
-    sudo docker inspect $CNT |\
+    docker inspect $CNT |\
     jq '.[].NetworkSettings.Networks' |\
     grep IPAddress |\
     awk '{ print $2 }' |\
@@ -131,7 +131,7 @@ dinspect() {
   [ "$CNT" = "" ] && CNT=$1
   [ "$CNT" = "" ] &&\
     echo "Usage dip <container_id> or CNT=<container_id>; dip" ||\
-    sudo docker inspect $CNT | jq '.'
+    docker inspect $CNT | jq '.'
 }
 
 #
@@ -139,14 +139,14 @@ dinspect() {
 #
 
 dimgls() {
-  sudo docker image list
+  docker image list
 }
 
 dimgcon() {
   [ "$IMG" = "" ] && IMG=$1
   [ "$IMG" = "" ] &&\
     echo "Usage dimgcon  <image_id> or IMG=<image_id>; dimgcon" ||\
-    sudo docker run --cidfile=".$IMG" -it $IMG /bin/bash
+    docker run --cidfile=".$IMG" -it $IMG /bin/bash
 }
 
 dimgrun() {
@@ -154,7 +154,7 @@ dimgrun() {
   [ "$CNM" = "" ] && CNMOPT="" || CNMOPT="--name $CNM"
   [ "$IMG" = "" ] &&\
     echo "Usage dimgrun <image_id> <container_name> or IMG=<image_id> [CNM=<container_name>]; dimgcon" ||\
-    sudo docker run -d $CNMOPT $IMG
+    docker run -d $CNMOPT $IMG
 }
 
 #
