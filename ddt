@@ -85,7 +85,7 @@ ddt_sel() {
   _chk; [ $RES -ne 0 ] && return 1
   _tmp; TMP=$RES
   _tmp; SEL=$RES
-  sudo docker ps --all --format "{{.ID}} {{.Names}}" > $TMP
+  docker ps --all --format "{{.ID}} {{.Names}}" > $TMP
   dialog --title "Container selection$FN" \
 	 --keep-tite\
 	 --menu 'Please select a container from the list' 18 70 15 $(cat $TMP) 2>$SEL
@@ -127,11 +127,11 @@ ddt_net() {
  _chk; [ $RES -ne 0 ] && return 1
  _tmp; TMP=$RES
  _tmp; SEL=$RES
- sudo docker network ls --format "{{.ID}} {{.Name}}" > $TMP
+ docker network ls --format "{{.ID}} {{.Name}}" > $TMP
  dialog --keep-tite\
          --menu 'Please select a network from the list' 18 70 15 $(cat $TMP) 2>$SEL
  CNW=$(cat $SEL)
- [ "$CNW" != "" ] && sudo docker network inspect $CNW | jq '.'
+ [ "$CNW" != "" ] && docker network inspect $CNW | jq '.'
   _cleanup
 }
 
@@ -144,7 +144,7 @@ ddt_imgsel() {
   _chk; [ $RES -ne 0 ] && return 1
   _tmp; TMP=$RES
   _tmp; SEL=$RES
-  sudo docker image ls --format " \"{{.ID}}\" \"{{.Repository}}:{{.Tag}} ({{.CreatedSince}})\"" > $TMP
+  docker image ls --format " \"{{.ID}}\" \"{{.Repository}}:{{.Tag}} ({{.CreatedSince}})\"" > $TMP
   CMD="dialog --title \"Image selection$FN\" --keep-tite --menu 'Please select an image from the list' 18 70 15 $(cat $TMP) 2>$SEL"
   eval $CMD
   IMG=$(cat $SEL)
