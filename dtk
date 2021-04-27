@@ -99,7 +99,7 @@ export -f dps
 dexe() {
  [ "$CNT" = "" ] &&\
    docker exec -ti $* ||\
-   docker exect $CNT $*
+   docker exec $CNT $*
 }
 export -f dexe
 
