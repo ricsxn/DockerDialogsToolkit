@@ -85,7 +85,11 @@ drm() {
 export -f drm
 
 dlogs() { 
+<<<<<<< HEAD
  [ "$CNT" = "" ] && CNT=$1
+=======
+ [ "$CNT" != "" ] && CNT=$1 && shift 1
+>>>>>>> b07c6bb (fix dlogs)
  [ "$CNT" = "" ] &&\
    echo "usage: dlogs <container_id> or CNT=<container_id>; dlogs" ||\
    docker logs $CNT
