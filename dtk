@@ -84,7 +84,7 @@ drm() {
 export -f drm
 
 dlogs() { 
- [ "$CNT" = "" ] && CNT=$1 && shift 1
+ [ "$CNT" != "" ] && CNT=$1 && shift 1
  [ "$CNT" = "" ] &&\
    echo "usage: dlogs <container_id> or CNT=<container_id>; dlogs" ||\
    docker logs $CNT $*
