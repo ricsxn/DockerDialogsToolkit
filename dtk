@@ -22,6 +22,7 @@ Containers
  'dstop' Stop the specified container
  'drm' Remove the specified container (Eventually it stops running containers)
  'dlogs' Show container logs (supports docker logs arguments)
+ 'dlogsf' Show container logs in append mode
  'dps' Show the list of contaners
  'dexe'  Execute a command on top of the specified container
  'dkill' Stop and then remove the specified container
@@ -84,15 +85,23 @@ drm() {
 export -f drm
 
 dlogs() { 
- [ "$CNT" != "" ] && CNT=$1 && shift 1
+ [ "$CNT" = "" ] && CNT=$1
  [ "$CNT" = "" ] &&\
    echo "usage: dlogs <container_id> or CNT=<container_id>; dlogs" ||\
-   docker logs $CNT $*
+   docker logs $CNT
 }
 export -f dlogs
 
+dlogsf() { 
+ [ "$CNT" = "" ] && CNT=$1
+ [ "$CNT" = "" ] &&\
+  echo "usage: dlogsf <container_id> or CNT=<container_id>; dlogsf" ||\
+  docker logs --follow $CNT
+}
+export -f dlogsf
+
 dps() {
-  docker ps -a
+ docker ps -a
 }
 export -f dps
 
